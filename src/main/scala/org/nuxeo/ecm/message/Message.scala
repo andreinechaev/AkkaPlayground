@@ -1,9 +1,3 @@
-package org.nuxeo.ecm.message
-
-import org.nuxeo.ecm.core.api.Blob
-import org.nuxeo.ecm.core.api.blobholder.BlobHolder
-
-
 /*
  * (C) Copyright 2006-2016 Nuxeo SA (http://nuxeo.com/) and others.
  *
@@ -23,6 +17,10 @@ import org.nuxeo.ecm.core.api.blobholder.BlobHolder
  * Contributors:
  *     anechaev
  */
+package org.nuxeo.ecm.message
+
+import org.nuxeo.ecm.core.api.Blob
+import org.nuxeo.ecm.core.api.blobholder.BlobHolder
 
 import scala.collection.JavaConversions._
 

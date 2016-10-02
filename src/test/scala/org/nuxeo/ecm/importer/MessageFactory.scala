@@ -1,11 +1,3 @@
-package org.nuxeo.ecm.importer
-
-import java.util.UUID
-
-import org.nuxeo.ecm.message.{Data, Message}
-
-import scala.util.Random
-
 /*
  * (C) Copyright 2006-2016 Nuxeo SA (http://nuxeo.com/) and others.
  *
@@ -25,6 +17,16 @@ import scala.util.Random
  * Contributors:
  *     anechaev
  */
+
+package org.nuxeo.ecm.importer
+
+import java.util.UUID
+
+import org.nuxeo.ecm.message.{Data, Message}
+
+import scala.util.Random
+
+
 object MessageFactory {
   def generate(path: String): Message = {
     val rnd = Random.nextInt(100)

@@ -1,8 +1,3 @@
-package org.nuxeo.ecm.importer
-
-import akka.actor.{Actor, ActorRef}
-import org.nuxeo.ecm.message.{Error, Message, Start, Stop}
-
 /*
  * (C) Copyright 2006-2016 Nuxeo SA (http://nuxeo.com/) and others.
  *
@@ -22,6 +17,11 @@ import org.nuxeo.ecm.message.{Error, Message, Start, Stop}
  * Contributors:
  *     anechaev
  */
+
+package org.nuxeo.ecm.importer
+
+import akka.actor.{Actor, ActorRef}
+import org.nuxeo.ecm.message.{Error, Message, Start, Stop}
 
 class Producer(actor: ActorRef) extends Actor {
 

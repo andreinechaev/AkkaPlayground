@@ -1,12 +1,3 @@
-package org.nuxeo.ecm.operations
-
-import akka.actor.Actor
-import org.nuxeo.ecm.core.api.{Blob, CoreInstance, CoreSession, DocumentNotFoundException}
-import org.nuxeo.ecm.core.blob.{BlobManager, SimpleManagedBlob}
-import org.nuxeo.ecm.message._
-import org.nuxeo.runtime.api.Framework
-import org.nuxeo.runtime.transaction.TransactionHelper
-
 /*
  * (C) Copyright 2006-2016 Nuxeo SA (http://nuxeo.com/) and others.
  *
@@ -26,24 +17,33 @@ import org.nuxeo.runtime.transaction.TransactionHelper
  * Contributors:
  *     anechaev
  */
-class Import(repoName: String) extends Actor {
 
+package org.nuxeo.ecm.operations
+
+import akka.actor.Actor
+import org.nuxeo.ecm.core.api.{Blob, CoreInstance, DocumentNotFoundException}
+import org.nuxeo.ecm.core.blob.{BlobManager, SimpleManagedBlob}
+import org.nuxeo.ecm.message._
+import org.nuxeo.runtime.api.Framework
+import org.nuxeo.runtime.transaction.TransactionHelper
+
+class Import(repoName: String, message: Message) extends Actor {
 
   override def receive: Receive = {
-    case Start => println("Import started")
+    case Start =>
+      importMessage(message)
+      sender() ! Success(message.title)
     case Stop =>
       println("Import stopped")
       context.stop(self)
-    case m: Message =>
-      importMessage(m)
-      sender ! s"New document was created: ${m.title}"
-      println(m.title)
+    case str: String if message.path.contains(str) =>
+      importMessage(message)
+      sender() ! Success(message.title)
     case Error(reason) =>
       println(reason)
       context.stop(self)
-    case undef => println(s"Import couldn't recognize $undef")
+    case undef => unhandled(undef)
   }
-
 
   def importMessage(message: Message): Unit = {
     if (!TransactionHelper.isTransactionActive) {
@@ -63,7 +63,7 @@ class Import(repoName: String) extends Actor {
       session.createDocument(docModel)
     } catch {
       case e: DocumentNotFoundException =>
-        println(e.getLocalizedMessage)
+        throw e
       case e: Exception =>
         println(e)
     } finally {
